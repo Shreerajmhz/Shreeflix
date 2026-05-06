@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Create Profile{% endblock title %}
+{% block content %}
+<div class="min-h-screen w-full flex justify-center items-center">
+
+<form method="post" class="bg-[#1f1f1f] p-6 rounded-md w-full max-w-6xl mx-4">
+    {% csrf_token %}
+
+    <!-- Back Button -->
+    <a href="{% url 'manage_profiles' %}" class="flex items-center text-gray-400 hover:text-white mb-12 group w-fit">
+        <span class="mr-2 text-2xl group-hover:-translate-x-1 transition">←</span>
+        <span class="font-semibold">Manage profiles</span>
+    </a>
+
+    <!-- Heading -->
+    <div class="mb-6">
+        <h1 class="text-4xl font-bold mb-2">Create New Profile</h1>
+        <p class="text-gray-400">Choose your profile name and avatar</p>
+    </div>  
+
+    <!-- Name -->
+    <div class="mb-6 text-white">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+    </div>
+
+    <!-- Avatar selection -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+      {% for choice_value, choice_label in form.avatar.field.choices %}
+      <label class="cursor-pointer flex flex-col items-center relative group">
+        <input type="radio" name="avatar" value="{{ choice_value }}" class="hidden peer">
+        <img src="{% static 'core/avatars/' %}{{ choice_value }}" 
+             class="md:w-full md:h-auto w-36 object-cover rounded-full
+                    border-4 border-gray-700 peer-checked:border-red-600
+                    transition-all duration-300 group-hover:scale-105">
+        <span class="mt-2 text-white">{{ choice_label }}</span>
+      </label>
+      {% endfor %}
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" class="w-full bg-red-600 text-white px-6 py-3 rounded font-semibold hover:bg-red-700 transition">Create Profile</button>
+</form>
+</div>
+{% endblock content %}

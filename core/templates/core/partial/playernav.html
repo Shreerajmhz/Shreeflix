@@ -1,0 +1,66 @@
+{% load static %}
+<nav class="fixed flex items-center top-0 left-0 w-full h-16 backdrop-blur-md z-50">
+    <a href="{% url 'home' %}">
+        <img src="{% static 'core/logo.png' %}" alt="logo" class="h-8 md:h-12 ml-4 mt-2">
+    </a>
+    <div class="relative group ml-auto pr-10 md:pt-6 pt-2">
+ <div class="relative group">
+                <div class="cursor-pointer">
+                        <img src="{% static 'core/avatars/' %}{{ profile.avatar }}" 
+                             alt="{{ profile.name }}" 
+                             class="size-8 md:size-10 rounded-full border-2 border-white hover:border-red-600 object-cover transition">
+                </div>
+                  <div class="absolute right-0 w-48 bg-black border border-gray-700 rounded-md shadow-lg hidden group-hover:block z-50">
+                        <!-- Profile Switch Section -->
+                        {% if user_profiles %}
+                        <div class="border-b border-gray-700">
+                            <p class="px-4 py-2 text-gray-400 text-xs font-semibold uppercase">Switch Profile</p>
+                            {% for prof in user_profiles %}
+                            <a href="{% url 'select_profile' prof.id %}" 
+                               class="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 transition {% if profile.id == prof.id %}bg-gray-900{% endif %}">
+                                <img src="{% static 'core/avatars/' %}{{ prof.avatar }}" 
+                                     alt="{{ prof.name }}" 
+                                     class="w-8 h-8 rounded-full border border-gray-600 object-cover">
+                                <span class="text-sm text-white">{{ prof.name }}</span>
+                                {% if profile.id == prof.id %}
+                                <span class="ml-auto text-red-600 font-bold">✓</span>
+                                {% endif %}
+                            </a>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Manage Profiles Section -->
+                        <div class="border-b border-gray-700">
+                            <a href="{% url 'manage_profiles' %}" 
+                               class="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 transition text-white text-sm">
+                                <span class="text-lg">⚙️</span>
+                                <span>Manage Profiles</span>
+                            </a>
+                        </div>
+
+                         <!-- Change Password Section -->
+                        <div class="border-b border-gray-700">
+                            <a href="{% url 'password_change' %}" 
+                            class="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 transition text-white text-sm">
+                                <span class="text-lg">🔒</span>
+                                <span>Change Password</span>
+                            </a>
+                        </div>
+
+                        
+                        <!-- Sign Out Section -->
+                        <form method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button 
+                                type="submit"
+                                class="w-full text-center py-4 rounded-md text-sm hover:bg-red-600 transition text-white font-semi-bold"
+                            >
+                                Sign out
+                            </button>
+                        </form>
+                    </div>
+            </div>
+       
+    </div>
+</nav>

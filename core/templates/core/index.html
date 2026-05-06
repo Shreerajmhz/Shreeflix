@@ -1,0 +1,300 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Netflix Home{% endblock title %}
+
+{% block content %}
+<div class="relative min-h-screen bg-black text-white">
+
+  <!-- background image -->
+  <div class="absolute inset-0 bg-cover bg-center" style="background-image: url({% static 'core/bg.jpg' %});"></div>
+
+  <!-- bottomline accent -->
+  <div class="absolute bottom-0 bg-red-500 w-full h-2 z-20"></div>
+
+  <!-- overlay -->
+  <div class="absolute inset-0 h-screen bg-black/70"></div>
+
+  <!-- hero section start -->
+  <div class="relative min-h-screen z-10 ">
+    {% include "core/partial/nav.html" %}
+
+    <div class="text-center pt-32 md:mt-52 px-4 mt-16">
+      <div class="text-3xl md:text-7xl font-bold">Unlimited movies,<br> TV shows, and more</div>
+      <div class="font-semi-bold md:font-bold text- md:text-2xl my-2 md:mt-6">Starts at USD 2.99. Cancel anytime.</div>
+      <div class="font-bold md:font-bold text-sm md:text-xl"> Ready to watch? Enter your email to create or restart your
+        membership.</div>
+      <form method="post">
+        {% csrf_token %}
+        <div class="mt-2 md:mt-9 flex flex-col sm:flex-row gap-2 justify-center items-center">
+          <input type="email" name="email" placeholder="Email address" auto-complete="email"
+            class="w-full lg:w-[30%] md:h-18 h-16 bg-black/30 border border-white placeholder-white/70 placeholder:text-[17px] text-left pl-5 rounded-md">
+          <button type="submit"
+            class="w-full py-3 sm:w-auto h-16 lg:h-18 lg:w-60 bg-[#e50914] font-semibold text-[23px] rounded-md ml-2 flex items-center justify-center">Get
+            Started <img src="{% static 'core/chevron.png' %}" class="inline-block h-6" alt="chevron"></button>
+        </div>
+      </form>
+      {% if messages %}
+      <ul>
+        {% for message in messages %}
+        <li style="color:red;">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- hero section end -->
+</div>
+
+<!--Container for talako part-->
+
+<div class="max-w-[1390px] mx-auto px-4 sm:px-6 lg:px-8 py-10 bg-black">
+
+  <!-- Trending Now -->
+  <h2 class="font-bold text-3xl md:text-5xl text-white mb-10 text-center lg:text-left">
+    Trending Now
+  </h2>
+
+  <div class=" relative px-2">
+    <!-- left-right BUTTON -->
+    <button onclick="scrollCarouselLeft()" class="absolute left-0  top-1/2 -translate-y-1/3 z-10
+           flex justify-center items-center
+           px-2 md:px-2 py-10 md:py-16 bg-white/15 rounded-md hover:bg-white/30 hover:scale-[105%]">
+      &lt;
+    </button>
+
+    <button onclick="scrollCarouselRight()" class="absolute right-0 top-1/2 -translate-y-1/3 z-10
+           flex justify-center items-center
+           px-2 md:px-2 py-10 md:py-16 bg-white/15 rounded-md  hover:bg-white/30 hover:scale-[105%]">
+      &gt;
+    </button>
+
+    <div id="scrollContainer"
+      class="relative flex px-6 gap-10 overflow-x-auto overflow-y-hidden hide-scrollbar scroll-smooth">
+
+      {% for movie in trending_movies %}
+      <div
+        class="shrink-0 lg:w-72 lg:h-80 w-60 h-64 rounded-md bg-cover bg-center hover:scale-105 transition-transform relative cursor-pointer"
+        style="background-image: url('{{ movie.poster.url }}');"
+        onclick="openModal('{{ movie.title|escapejs }}', '{{ movie.release_date|date:'Y' }}', '{{ movie.description|escapejs }}', '{{ movie.poster.url }}')">
+        <div class="absolute bottom-4 -left-4 custom-stroke text-6xl md:text-8xl font-extrabold drop-shadow-lg">{{ forloop.counter }}</div>
+      </div>
+      {% empty %}
+      <div class="text-white text-xl px-4">No trending movies found.</div>
+      {% endfor %}
+    </div>
+  </div>
+<!-- Movie Details Modal -->
+<div id="movieModal" class="fixed inset-0 z-50 bg-black/80 flex hidden items-center justify-center p-4">
+  <div class="bg-[#181818] rounded-lg overflow-hidden max-w-xl w-full relative">
+    
+    <!-- Close Button -->
+    <button onclick="closeModal()" class="absolute top-2 right-2 text-white p-2 hover:bg-gray-700 rounded">
+      ✕
+    </button>
+
+    <!-- Poster + Info -->
+    <div class="flex flex-col md:flex-row">
+      <!-- Poster -->
+      <img id="modalCover" src="" alt="Movie Poster" class="w-full md:w-1/3 h-64 object-cover">
+
+      <!-- Info -->
+      <div class="p-4 flex-1 text-white">
+        <h2 id="modalTitle" class="text-2xl font-bold mb-2">Movie Title</h2>
+        <span id="modalYear" class="text-green-400 font-semibold mb-2 block">2023</span>
+        <p id="modalDescription" class="text-gray-300 text-sm">Movie description goes here...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function openModal(title, year, description, coverUrl) {
+  document.getElementById('modalTitle').innerText = title;
+  document.getElementById('modalYear').innerText = year;
+  document.getElementById('modalDescription').innerText = description;
+  document.getElementById('modalCover').src = coverUrl;
+  document.getElementById('movieModal').classList.remove('hidden');
+}
+
+function closeModal() {
+  document.getElementById('movieModal').classList.add('hidden');
+}
+</script>
+
+
+  <!-- More Reasons to Watch -->
+  <h2 class="text-white text-3xl md:text-5xl font-bold my-8 text-center lg:text-left">
+    More reasons to watch
+  </h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div class="relative bg-[#1f1f1f] p-5 rounded-md min-h-[260px]">
+      <h3 class="text-white font-bold text-2xl pb-2">Enjoy on your TV</h3>
+      <p class="text-white mb-4 text-lg">Watch on smart TVs, Playstation, Xbox, and more</p>
+      <img src="https://img.icons8.com/fluency/48/monitor.png" alt="TV Icon"
+        class="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 w-12 h-12" />
+    </div>
+    <div class="relative bg-[#1f1f1f] p-5 rounded-md min-h-[260px]">
+      <h3 class="text-white font-bold text-2xl pb-2">Download your shows to watch offline</h3>
+      <p class="text-white mb-4 text-lg">Save your favorites easily and always have something to watch.</p>
+      <img src="https://img.icons8.com/fluency/48/download.png" alt="Download Icon"
+        class="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 w-12 h-12" />
+    </div>
+    <div class="relative bg-[#1f1f1f] p-5 rounded-md min-h-[260px]">
+      <h3 class="text-white font-bold text-2xl pb-2">Watch everywhere</h3>
+      <p class="text-white mb-4 text-lg">Stream unlimited movies and TV shows on your phone, tablet, laptop, and TV.</p>
+      <img src="https://img.icons8.com/?size=100&id=F2R6V3ECtTmF&format=png&color=000000" alt="img"
+        class="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 w-16 h-16">
+    </div>
+    <div class="relative bg-[#1f1f1f] p-5 rounded-md min-h-[260px]">
+      <h3 class="text-white font-bold text-2xl pb-2">Create profiles for kids</h3>
+      <p class="text-white mb-4 text-lg">Send kids on adventures with their favorite characters in a space made just for
+        them.</p>
+      <img src="https://img.icons8.com/?size=100&id=wOKadQVnq2xz&format=png&color=000000" alt="img"
+        class="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 w-12 h-12">
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <h2 class="text-white text-3xl md:text-5xl font-bold my-6 text-center lg:text-left">
+    Frequently Asked Questions
+  </h2>
+  <div class="space-y-4">
+    <div class="faq-item bg-white/20 rounded-md overflow-hidden">
+      <button class="faq-question relative w-full hover:bg-white/30 transition px-4 sm:px-6 md:px-8 py-6 text-left">
+        <span class="text-white text-lg md:text-2xl">What is Netflix?</span>
+        <span class="faq-icon absolute right-6 top-4 text-5xl">+</span>
+      </button>
+
+      <div
+        class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-4 sm:px-6 md:px-8 text-white ">
+        <p class="py-6 text-lg lg:text-2xl">Netflix is a streaming service that offers a wide variety of award-winning
+          TV shows, movies, anime, documentaries, and more on thousands of internet-connected devices.<br>
+          You can watch as much as you want, whenever you want without a single commercial – all for one low monthly
+          price. There's always something new to discover and new TV shows and movies are added every week!</p>
+      </div>
+    </div>
+
+    <div class="faq-item bg-white/20 rounded-md overflow-hidden">
+      <button class="faq-question relative w-full hover:bg-white/30 transition px-4 sm:px-6 md:px-8 py-6 text-left">
+        <span class="text-white text-lg md:text-2xl">How much does Netflix cost?</span>
+        <span class="faq-icon absolute right-6 top-4 text-5xl">+</span>
+      </button>
+
+      <div
+        class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-4 sm:px-6 md:px-8 text-white">
+        <p class="py-6 text-lg lg:text-2xl">Watch Netflix on your smartphone, tablet, Smart TV, laptop, or streaming
+          device, all for one fixed monthly fee. Plans range from USD 2.99 to USD 9.99/month.</p>
+      </div>
+    </div>
+
+    <div class="faq-item bg-white/20 rounded-md overflow-hidden">
+      <button class="faq-question relative w-full hover:bg-white/30 transition px-4 sm:px-6 md:px-8 py-6 text-left">
+        <span class="text-white text-lg md:text-2xl">Where can I watch?</span>
+        <span class="faq-icon absolute right-6 top-4 text-5xl">+</span>
+      </button>
+
+      <div
+        class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-4 sm:px-6 md:px-8 text-white">
+        <p class="py-6 text-lg md:text-2xl">Watch anywhere, anytime. Sign in with your Netflix account to watch
+          instantly on the web at netflix.com from your personal computer or on any internet-connected device that
+          offers the Netflix app, including smart TVs, smartphones, tablets, streaming media players and game consoles.
+          <br>You can also download your favorite shows with the iOS or Android app. Use downloads to watch while you're
+          on the go and without an internet connection. Take Netflix with you anywhere.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item bg-white/20 rounded-md overflow-hidden">
+      <button class="faq-question relative w-full hover:bg-white/30 transition px-4 sm:px-6 md:px-8 py-6 text-left">
+        <span class="text-white text-lg md:text-2xl">How do I cancel?</span>
+        <span class="faq-icon absolute right-6 top-4 text-5xl">+</span>
+      </button>
+
+      <div
+        class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-4 sm:px-6 md:px-8 text-white">
+        <p class="py-6 text-lg lg:text-2xl">Netflix is flexible. You can easily cancel your account online in two
+          clicks. There are no cancellation fees – start or stop your account anytime.</p>
+      </div>
+    </div>
+
+    <div class="faq-item bg-white/20 rounded-md overflow-hidden">
+      <button class="faq-question relative w-full hover:bg-white/30 transition px-4 sm:px-6 md:px-8 py-6 text-left">
+        <span class="text-white text-lg md:text-2xl">What can I watch on Netflix?</span>
+        <span class="faq-icon absolute right-6 top-4 text-5xl">+</span>
+      </button>
+
+      <div
+        class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-4 sm:px-6 md:px-8 text-white">
+        <p class="py-6 text-lg lg:text-2xl">Netflix has an extensive library of feature films, documentaries, TV shows,
+          anime, award-winning Netflix originals, and more. Watch as much as you want, anytime you want.</p>
+      </div>
+    </div>
+
+    <div class="faq-item bg-white/20 rounded-md overflow-hidden">
+      <button class="faq-question relative w-full hover:bg-white/30 transition px-4 sm:px-6 md:px-8 py-6 text-left">
+        <span class="text-white text-lg md:text-2xl">Is Netflix good for kids?</span>
+        <span class="faq-icon absolute right-6 top-4 text-5xl">+</span>
+      </button>
+
+      <div
+        class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-4 sm:px-6 md:px-8 text-white">
+        <p class="py-6 text-lg lg:text-2xl">The Netflix Kids experience is included in your membership to give parents
+          control while kids enjoy family-friendly TV shows and movies in their own space.
+          Kids profiles come with PIN-protected parental controls that let you restrict the maturity rating of content
+          kids can watch and block specific titles you don’t want kids to see.</p>
+      </div>
+    </div>
+
+
+    <!-- Footer -->
+    <!-- Email / Call to Action -->
+    <div class="text-center font-bold text-xl my-8 py-4">
+      Ready to watch? Enter your email to create or restart your membership.
+    </div>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-10 px-4 sm:px-8">
+        <input type="email" placeholder="Email address" name="email"
+          class="w-full sm:w-[40%] h-14 bg-black/30 border border-white placeholder-white/70 placeholder:text-[17px] pl-4 rounded-md">
+        <button
+          class="h-14 sm:w-60 bg-[#e50914] font-semibold text-[20px] sm:text-[23px] rounded-md flex items-center justify-center">
+          Get Started <img src="{% static 'core/chevron.png' %}" class="inline-block h-6 ml-2" alt="chevron">
+        </button>
+      </div>
+    </form>
+
+    <!-- Links -->
+    <div class="max-w-7xl py-4 mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="underline mb-6">Questions? Contact Us</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
+        <ul class="space-y-2">
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Investor Relations</a></li>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Speed Test</a></li>
+        </ul>
+        <ul class="space-y-2">
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Jobs</a></li>
+          <li><a href="#">Cookie Preferences</a></li>
+          <li><a href="#">Legal Notices</a></li>
+        </ul>
+        <ul class="space-y-2">
+          <li><a href="#">Account</a></li>
+          <li><a href="#">Ways to Watch</a></li>
+          <li><a href="#">Corporate Information</a></li>
+          <li><a href="#">Only on Netflix</a></li>
+        </ul>
+        <ul class="space-y-2">
+          <li><a href="#">Media Center</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <h1 class="text-lg font-bold py-4">&#169; Shreeraj's Premium Netflix </h1>
+    </div>
+  </div>
+  {% endblock content %}

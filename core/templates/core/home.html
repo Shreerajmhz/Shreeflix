@@ -1,0 +1,182 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Homepage{% endblock title %}
+
+{% block content %}
+<div class="relative md:h-[80vh] h-[30vh] pt-24 md:pt-24 bg-black overflow-hidden">
+    <nav id="nav" class="fixed top-0 left-0 w-full z-30 h-18 md:h-24 flex items-center justify-between px-4 backdrop-blur-sm">
+        <div class="relative flex items-center md:gap-6 gap-2 text-white">
+            <a href="{% url 'home' %}">
+            <img src="{% static 'core/logo.png' %}" alt="logo"  class=" w-32 md:w-48 md:h-18 md:p-4">
+            </a>
+            <ul class=" hidden md:flex items-center gap-4 text-white/70 ">
+                <li class="hover:text-white cursor-pointer">Home</li>
+                <li class="hover:text-white cursor-pointer">TV Shows</li>
+                <li class="hover:text-white cursor-pointer">Movies</li>
+                <li class="hover:text-white cursor-pointer">News & Popular</li>
+                <li class="hover:text-white cursor-pointer">My List</li>
+                <li class="hover:text-white cursor-pointer">Browse by Languages</li>
+            </ul>
+
+            <div class="md:hidden relative">
+                <button id="mobile-menu-button" class="flex items-center text-sm ml-4">Browse
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M7 10l5 5 5-5H7z"/>
+                    </svg>
+
+                </button>
+                <ul id="mobile-menu"
+                    class="absolute right-2 mt-2 w-48 bg-black border border-gray-700 rounded-md shadow-lg hidden flex-col gap-y-2 p-2">
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-800">Home</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-800">TV Shows</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-800">Movies</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-800">News & Popular</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-800">My List</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-800">Browse by Languages</a></li>
+                </ul>
+
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 md:size-8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <span class="hidden md:inline xl:text-lg md:text-xl">Kids</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 md:size-8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+            </svg>
+            <div class="relative group">
+                <div class="cursor-pointer">
+                        <img src="{% static 'core/avatars/' %}{{ profile.avatar }}" 
+                             alt="{{ profile.name }}" 
+                             class="size-8 md:size-10 rounded-full border-2 border-white hover:border-red-600 object-cover transition">
+                </div>
+                  <div class="absolute right-0 w-48 bg-black border border-gray-700 rounded-md shadow-lg hidden group-hover:block z-50">
+                        <!-- Profile Switch Section -->
+                        {% if user_profiles %}
+                        <div class="border-b border-gray-700">
+                            <p class="px-4 py-2 text-gray-400 text-xs font-semibold uppercase">Switch Profile</p>
+                            {% for prof in user_profiles %}
+                            <a href="{% url 'select_profile' prof.id %}" 
+                               class="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 transition {% if profile.id == prof.id %}bg-gray-900{% endif %}">
+                                <img src="{% static 'core/avatars/' %}{{ prof.avatar }}" 
+                                     alt="{{ prof.name }}" 
+                                     class="w-8 h-8 rounded-full border border-gray-600 object-cover">
+                                <span class="text-sm text-white">{{ prof.name }}</span>
+                                {% if profile.id == prof.id %}
+                                <span class="ml-auto text-red-600 font-bold">✓</span>
+                                {% endif %}
+                            </a>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Manage Profiles Section -->
+                        <div class="border-b border-gray-700">
+                            <a href="{% url 'manage_profiles' %}" 
+                            class="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 transition text-white text-sm">
+                                <span class="text-lg">⚙️</span>
+                                <span>Manage Profiles</span>
+                            </a>
+                        </div>
+
+                        <!-- Change Password Section -->
+                        <div class="border-b border-gray-700">
+                            <a href="{% url 'password_change' %}" 
+                            class="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 transition text-white text-sm">
+                                <span class="text-lg">🔒</span>
+                                <span>Change Password</span>
+                            </a>
+                        </div>
+
+                        
+                        <!-- Sign Out Section -->
+                        <form method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button 
+                                type="submit"
+                                class="w-full text-left px-8 py-4 rounded-md text-sm hover:bg-red-600 transition text-white"
+                            >
+                                Sign out
+                            </button>
+                        </form>
+                    </div>
+            </div>
+
+        </div>  
+    </nav>
+
+    <!-- Background Video -->
+    <video
+        class="absolute top-0 left-0 w-full md:h-[80vh] h-[30vh] z-10 object-cover"
+        autoplay
+        muted
+        loop
+        playsinline
+    >
+        <source src="/media/posters/bg/trailer2.mp4" type="video/mp4">
+    </video>
+
+        <!-- Content on top -->
+    <div class="relative z-20 flex md:items-end h-full px-2 md:px-10 md:pb-16">
+        <div class="md:max-w-xl max-w-54">
+            {% if profile %}
+                <h2 class="text-white text-2xl md:text-5xl font-bold">Hello {{ profile.name }}!</h2>
+            {% endif %}
+            <h1 class="md:text-5xl text-xl font-bold">Welcome to Netflix</h1>
+            <p class="hidden md:mt-4 mt-2 text-sm md:text-md text-gray-300">You can click on the for you videos and bless your eyes into premium side</p>
+            <div class="mt-6 flex gap-4">
+                <a href="#"
+                   class="bg-white text-sm md:text-md text-black px-2 md:px-6 py-2 rounded font-semibold hover:bg-gray-200">
+                   ▶ Play
+                </a>
+                <button class="bg-gray-600/70 px-6 py-2 rounded">
+                   More Info
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="flex items-center justify-between m-6 gap-6">
+    <h1 class="font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl">For you</h1>
+
+    <select
+    class="md:text-xl font-bold border rounded bg-gray-800 md:p-3 text-white items-center"
+    onchange="window.location.href=this.value"
+    >
+    <option value="{% url 'home' %}">All</option>
+    <option value="{% url 'movies_by_category' 'vlog' %}" {% if active_category == 'vlog' %}selected{% endif %}>Vlog</option>
+    <option value="{% url 'movies_by_category' 'family' %}" {% if active_category == 'family' %}selected{% endif %}>Family</option>
+    <option value="{% url 'movies_by_category' 'cultural' %}" {% if active_category == 'cultural' %}selected{% endif %}>Cultural</option>
+    <option value="{% url 'movies_by_category' 'random' %}" {% if active_category == 'random' %}selected{% endif %}>Random</option>
+
+    </select>
+
+</div>
+
+<div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 m-6">
+    {% for movie in movies %}
+        <div class="bg-gray-900 rounded-md overflow-hidden shadow-lg hover:scale-105 transform transition duration-300">
+            {% if movie.poster %}
+                <a href="{% url 'player' movie.id %}" target="_blank">
+                    <img src="{{ movie.poster.url }}" alt="{{ movie.title }}" class="w-full h-48 sm:h-52 md:h-56 lg:h-60 xl:h-64 object-cover">
+                </a>
+            {% endif %}
+            <div class="p-2">
+               <h3 class="hidden md:block md:text-white font-bold text-sm md:text-lg">{{ movie.title }}</h3>
+                <p class="hidden md:block md:text-gray-300 md:text-sm">{{ movie.release_date }}</p>
+
+                {% if movie.video_url %}
+                    <a href="{% url 'player' movie.id %}" target="_blank">
+                        <button class="bg-red-600 text-white px-4 py-1 mt-2 rounded w-full md:w-auto">Play</button>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-white">No movies added yet.</p>
+    {% endfor %}
+</div>
+{% endblock content %}

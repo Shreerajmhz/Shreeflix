@@ -1,0 +1,96 @@
+
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen w-full bg-black text-white p-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header Section -->
+        <div class="mb-12">
+            <a href="{% url 'profiles' %}" class="flex items-center text-gray-400 hover:text-white transition mb-6 w-fit group">
+                <span class="mr-2 text-2xl group-hover:-translate-x-1 transition">←</span>
+                <span class="font-semibold">Back to Profiles</span>
+            </a>
+            <div>
+                <h1 class="md:text-5xl text-3xl font-bold mb-2">Manage Profiles</h1>
+                <p class="text-gray-400">Edit, delete, or add new profiles</p>
+            </div>
+        </div>
+
+        <!-- Profiles Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 md:gap-8 gap-4 mb-12">
+            {% for profile in profiles %}
+            <div class="group">
+                <!-- Profile Card Container -->
+                <div class="rounded-xl  overflow-hidden border border-gray-800 hover:border-gray-700 transition duration-300 ">
+                    
+                    <!-- Avatar Section -->
+                    <div class="relative overflow-hidden bg-gray-950 flex items-center justify-center group/avatar">
+                        <img src="{% static 'core/avatars/' %}{{ profile.avatar }}" 
+                             class="md:w-56 md:h-56 h-32 p-4 rounded-full object-cover group-hover/avatar:scale-110 transition duration-300">
+                        <div class="absolute inset-0 transition duration-300"></div>
+                    </div>
+
+                    <!-- Profile Info -->
+                    <div class="md:p-6 grow flex flex-col justify-between">
+                        <div>
+                            <h2 class="text-2xl font-bold mb-2 px-6 group-hover:text-red-500 transition">{{ profile.name }}</h2>
+                            <p class="text-gray-400 text-sm px-6">
+                                {% if profile.is_kids %} 
+                                    <span class="inline-block bg-blue-600/20 text-blue-300 px-3 py-1 rounded-full text-xs font-semibold">
+                                        👶 Kids Profile
+                                    </span>
+                                {% else %}
+                                    <span class="inline-block bg-gray-700/50 text-gray-300 px-3 py-1 rounded-full text-xs font-semibold">
+                                        Regular Profile
+                                    </span>
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex gap-3 md:mt-6 my-2 md:pt-4 py-2 px-4 border-t border-gray-700">
+                            <a href="{% url 'manage_edit_profile' profile.id %}" 
+                               class="flex-1 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold py-2 px-4 rounded-lg transition duration-200 text-center text-sm">
+                                Edit
+                            </a>
+                            <form method="POST" action="{% url 'delete_profile' profile.id %}" class="flex-1">
+                                {% csrf_token %}
+                                <button type="submit" 
+                                        class="w-full bg-gray-700 hover:bg-red-700 active:bg-red-800 text-white font-bold py-2 px-4 rounded-lg transition duration-200 text-sm"
+                                        onclick="return confirm('Delete {{ profile.name }}?\n\nThis action cannot be undone.')">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <!-- Add New Profile Card -->
+            {% if profiles|length < 5 %}
+            <a href="{% url 'create_profile' %}">
+                <div class="overflow-hidden border-2 border-dashed border-gray-700 hover:border-red-600 transition duration-300 h-full flex items-center justify-center group cursor-pointer">
+                    <div class="text-center py-12">
+                        <div class="text-6xl font-bold text-gray-600 group-hover:text-red-600 transition duration-300 mb-3">
+                            +
+                        </div>
+                        <p class="text-lg font-semibold text-gray-400 group-hover:text-white transition">Add New Profile</p>
+                    </div>
+                </div>
+            </a>
+            {% else %}
+            <div class="rounded-xl overflow-hidden border-2 border-dashed border-gray-600 h-full flex items-center justify-center cursor-not-allowed opacity-50">
+                <div class="text-center py-12">
+                    <div class="text-4xl mb-3">🔒</div>
+                    <p class="text-lg font-semibold text-gray-400">Profile Limit Reached</p>
+                    <p class="text-sm text-gray-500 mt-1">Maximum 5 profiles</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

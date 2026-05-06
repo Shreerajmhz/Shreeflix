@@ -1,0 +1,87 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static tailwind_tags %}
+
+    <meta charset="UTF-8">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}{% endblock title %}
+    </title>
+    <style>
+        .custom-stroke {
+                        -webkit-text-stroke: 2px white; /* border around letters */
+                        color: black; /* fill color */
+                        }
+        /* Hide horizontal scrollbar */
+        .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+        }
+
+        .hide-scrollbar {
+        -ms-overflow-style: none;  /* IE & Edge */
+        scrollbar-width: none;     /* Firefox */
+        }
+        
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+{% tailwind_css %}
+</head>
+<body class="bg-black text-white">
+    {% block content %}
+   
+{% endblock content %}
+
+<script>
+    // FAQ toggle
+    document.querySelectorAll(".faq-question").forEach(button => {
+      button.addEventListener("click", () => {
+        const answer = button.nextElementSibling;
+        const icon = button.querySelector(".faq-icon");
+
+        document.querySelectorAll(".faq-answer").forEach(otherAnswer => {
+          if (otherAnswer !== answer) {
+            otherAnswer.style.maxHeight = null;
+            otherAnswer.previousElementSibling.querySelector(".faq-icon").textContent = "+";
+          }
+        });
+
+        if (answer.style.maxHeight) {
+          answer.style.maxHeight = null;
+          icon.textContent = "+";
+        } else {
+          answer.style.maxHeight = answer.scrollHeight + "px";
+          icon.textContent = "−";
+        }
+      });
+    });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const scroller = document.getElementById("scrollContainer");
+
+    // Use different names to avoid conflicts
+    window.scrollCarouselLeft = function() {
+        scroller.scrollBy({ left: -300, behavior: "smooth" });
+    }
+
+    window.scrollCarouselRight = function() {
+        scroller.scrollBy({ left: 300, behavior: "smooth" });
+    }
+});
+
+{% comment %} Mobile view menu dropdown homepage{% endcomment %}
+    const btn = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
+
+    btn.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+    });
+</script>
+
+
+</body>
+
+</html>
