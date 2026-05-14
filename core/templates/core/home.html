@@ -174,12 +174,13 @@
                 </button>
 
                 <!-- Modal -->
-                <div id="heroModal" class="fixed inset-0 z-50 bg-black/80 hidden flex items-center justify-center p-4">
+                <div id="heroModal" class="fixed inset-0 z-50 bg-black/80 items-center justify-center p-4" style="display:none;">
                     <div class="bg-[#181818] rounded-lg overflow-hidden max-w-2xl w-full relative shadow-2xl">
                         
                         <!-- Close -->
-                        <button id="heroModalCloseButton" type="button" onclick="closeHeroModal()"
-                                class="absolute top-3 right-3 bg-black/60 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-700">✕</button>
+                        <button type="button" 
+                                onclick="closeHeroModal()"
+                                class="absolute top-3 right-3 bg-black/60 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-700 z-10">✕</button>
 
                         <!-- Poster -->
                         <img src="/media/posters/thunb.png" alt="Movie" class="w-full h-64 object-cover">
@@ -192,9 +193,7 @@
                                 <span class="text-green-400 font-semibold">2024</span>
                                 <span class="border border-gray-500 px-1 text-gray-300 text-xs">HD</span>
                             </div>
-                            <p class="text-gray-300 text-sm leading-relaxed">the ending of sunakothi jatra. these are few glimpse of sunakothi jatra
-
-                            </p>
+                            <p class="text-gray-300 text-sm leading-relaxed">The ending of sunakothi jatra. These are few glimpse of sunakothi jatra.</p>
                             <a href="{% url 'player' 24 %}" target="_blank" class="inline-block mt-4 bg-white text-black px-6 py-2 rounded font-semibold hover:bg-gray-200">▶ Play</a>
                         </div>
                     </div>
@@ -202,20 +201,15 @@
 
                 <script>
                 function openHeroModal() {
-                    const modal = document.getElementById('heroModal');
-                    modal.classList.remove('hidden');
+                    document.getElementById('heroModal').style.display = 'flex';
                     document.body.style.overflow = 'hidden';
                 }
                 function closeHeroModal() {
-                    const modal = document.getElementById('heroModal');
-                    modal.classList.add('hidden');
+                    document.getElementById('heroModal').style.display = 'none';
                     document.body.style.overflow = '';
                 }
-                document.addEventListener('DOMContentLoaded', function() {
-                    document.getElementById('heroModalCloseButton').addEventListener('click', closeHeroModal);
-                    document.getElementById('heroModal').addEventListener('click', function(e) {
-                        if (e.target === this) closeHeroModal();
-                    });
+                document.getElementById('heroModal').addEventListener('click', function(e) {
+                    if (e.target === this) closeHeroModal();
                 });
                 </script>
             </div>
