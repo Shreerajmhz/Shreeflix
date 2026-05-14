@@ -1,98 +1,126 @@
-{% extends "core/base.html" %}
-{% block title %}Account{% endblock title %}
+{% extends 'core/base.html' %}
+{% block title %}Subscription Account{% endblock title %}
 
 {% block content %}
-<div class="min-h-screen bg-black text-white px-4 sm:px-6 lg:px-48 py-10">
-    <div class="max-w-5xl mx-auto">
-        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
-            <div>
-                <p class="text-sm text-gray-400">Account</p>
-                <h1 class="text-4xl font-bold">Subscription Details</h1>
-            </div>
-            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                <a href="{% url 'plans' %}" class="inline-flex items-center justify-center bg-red-600 hover:bg-red-700 text-white font-semibold px-5 py-3 rounded-md transition">
-                    Change Plan
-                </a>
-                <a href="{% url 'home' %}" class="inline-flex items-center justify-center border border-gray-700 text-gray-200 hover:text-white px-5 py-3 rounded-md transition">
-                    Back to Home
-                </a>
-            </div>
-        </div>
+<div class="min-h-screen bg-[#141414] text-white">
+    {% include "core/partial/nav.html" %}
 
-        <div class="bg-gray-900 border border-gray-800 rounded-3xl shadow-xl overflow-hidden">
-            <div class="px-6 py-8">
-                {% if user_subscription and user_subscription.plan %}
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <p class="text-sm text-gray-400 uppercase tracking-[0.3em]">Current plan</p>
-                            <h2 class="text-3xl font-semibold mt-2">{{ user_subscription.plan.name }}</h2>
-                            <p class="mt-4 text-gray-300">{{ user_subscription.plan.duration_days }} days · USD {{ user_subscription.plan.price }}</p>
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-                                <span class="text-gray-400">Status</span>
-                                <span class="font-semibold {{ user_subscription.is_valid|yesno:'text-emerald-400,text-yellow-400' }}">{% if user_subscription.is_valid %}Active{% else %}Expired{% endif %}</span>
-                            </div>
-                            <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-                                <span class="text-gray-400">Auto-renew</span>
-                                <span class="font-semibold text-gray-100">Enabled</span>
-                            </div>
-                            <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-                                <span class="text-gray-400">Start date</span>
-                                <span class="font-semibold text-gray-100">{{ user_subscription.start_date|date:"F j, Y" }}</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-gray-400">Renewal date</span>
-                                <span class="font-semibold text-gray-100">{{ user_subscription.end_date|date:"F j, Y" }}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-black/80 p-5 rounded-3xl border border-gray-800">
-                            <h3 class="text-lg font-semibold mb-4">Plan features</h3>
-                            <ul class="space-y-3 text-gray-300">
-                                <li><span class="font-semibold text-white">Quality:</span> {{ user_subscription.plan.video_sound_quality }}</li>
-                                <li><span class="font-semibold text-white">Resolution:</span> {{ user_subscription.plan.resolution }}</li>
-                                <li><span class="font-semibold text-white">Devices:</span> {{ user_subscription.plan.supported_devices }}</li>
-                                <li><span class="font-semibold text-white">Simultaneous streams:</span> {{ user_subscription.plan.simultaneous_streams }}</li>
-                                <li><span class="font-semibold text-white">Download devices:</span> {{ user_subscription.plan.download_devices }}</li>
-                            </ul>
-                        </div>
-                        <div class="bg-black/80 p-5 rounded-3xl border border-gray-800">
-                            <h3 class="text-lg font-semibold mb-4">Billing</h3>
-                            <p class="text-gray-300">Your payment is managed through Stripe.</p>
-                            <p class="mt-4 text-gray-300">To switch plans, click Change Plan and select a new subscription tier.</p>
-                        </div>
-                    </div>
-                {% else %}
-                    <div class="space-y-6">
-                        <p class="text-lg text-gray-300">You don’t have an active subscription yet.</p>
-                        <p class="text-gray-400">Pick a plan to start streaming with unlimited access.</p>
-                        <a href="{% url 'plans' %}" class="inline-flex items-center justify-center bg-red-600 hover:bg-red-700 text-white font-semibold px-5 py-3 rounded-md transition">
-                            Choose a plan
-                        </a>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="max-w-5xl mx-auto mt-8">
-            <div class="bg-red-900/10 border border-red-700 rounded-3xl p-6">
-                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <div class="max-w-6xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
+        <div class="space-y-8">
+            <section class="rounded-3xl border border-neutral-800 bg-[#181818] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.45)] sm:p-8">
+                <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
-                        <p class="text-sm text-red-300 uppercase tracking-[0.3em]">Danger zone</p>
-                        <h2 class="text-2xl font-semibold text-white">Delete account</h2>
-                        <p class="mt-2 text-gray-400">Permanently delete your Netflix account, including your profile and subscription data.</p>
+                        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-red-600">Account</p>
+                        <h1 class="mt-3 text-3xl font-bold tracking-tight text-white">Subscription overview</h1>
+                        <p class="mt-3 text-sm leading-6 text-neutral-400">Your current Netflix plan, renewal details, and account actions are shown below.</p>
                     </div>
-                    <form method="POST" action="{% url 'subscription_delete_account' %}" onsubmit="return confirm('Are you sure you want to permanently delete your account? This cannot be undone.');">
+                    <div class="flex flex-wrap gap-3">
+                        <a href="{% url 'plans' %}" class="inline-flex items-center rounded-lg border border-neutral-700 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:border-red-600 hover:text-red-400">Change plan</a>
+                    </div>
+                </div>
+            </section>
+
+            {% if user_subscription and user_subscription.plan %}
+            <section class="grid gap-6 xl:grid-cols-[2fr_1fr]">
+                <div class="rounded-3xl border border-neutral-800 bg-[#1f1f1f] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+                    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                        <div>
+                            <p class="text-sm uppercase tracking-[0.25em] text-neutral-500">Current plan</p>
+                            <h2 class="mt-2 text-3xl font-semibold text-white">{{ user_subscription.plan.name }}</h2>
+                            <p class="mt-2 text-sm text-neutral-400">Renewal date <span class="font-semibold text-white">{{ user_subscription.end_date|date:"F j, Y" }}</span></p>
+                        </div>
+                        <span class="inline-flex items-center rounded-full bg-emerald-500 px-3 py-1 text-sm font-semibold text-black">Currently active</span>
+                    </div>
+
+                    <div class="mt-8 grid gap-4 sm:grid-cols-2">
+                        <div class="rounded-3xl bg-[#111111] p-4">
+                            <p class="text-sm text-neutral-500">Price</p>
+                            <p class="mt-2 text-xl font-semibold text-white">USD {{ user_subscription.plan.price }}</p>
+                        </div>
+                        <div class="rounded-3xl bg-[#111111] p-4">
+                            <p class="text-sm text-neutral-500">Duration</p>
+                            <p class="mt-2 text-xl font-semibold text-white">{{ user_subscription.plan.duration_days }} days</p>
+                        </div>
+                        <div class="rounded-3xl bg-[#111111] p-4">
+                            <p class="text-sm text-neutral-500">Resolution</p>
+                            <p class="mt-2 text-xl font-semibold text-white">{{ user_subscription.plan.resolution }}</p>
+                        </div>
+                        <div class="rounded-3xl bg-[#111111] p-4">
+                            <p class="text-sm text-neutral-500">Video & sound</p>
+                            <p class="mt-2 text-xl font-semibold text-white">{{ user_subscription.plan.video_sound_quality }}</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 grid gap-4 sm:grid-cols-2">
+                        <div class="rounded-3xl bg-[#111111] p-4">
+                            <p class="text-sm text-neutral-500">Supported devices</p>
+                            <p class="mt-2 text-xl font-semibold text-white">{{ user_subscription.plan.supported_devices }}</p>
+                        </div>
+                        <div class="rounded-3xl bg-[#111111] p-4">
+                            <p class="text-sm text-neutral-500">Streams</p>
+                            <p class="mt-2 text-xl font-semibold text-white">{{ user_subscription.plan.simultaneous_streams }}</p>
+                        </div>
+                        <div class="sm:col-span-2 rounded-3xl bg-[#111111] p-4">
+                            <p class="text-sm text-neutral-500">Download devices</p>
+                            <p class="mt-2 text-xl font-semibold text-white">{{ user_subscription.plan.download_devices }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-3xl border border-neutral-800 bg-[#1f1f1f] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+                    <h3 class="text-xl font-semibold text-white">Subscription timeline</h3>
+                    <div class="mt-5 space-y-4">
+                        <div class="rounded-3xl bg-[#111111] p-4">
+                            <p class="text-sm text-neutral-500">Start date</p>
+                            <p class="mt-2 text-lg font-semibold text-white">{{ user_subscription.start_date|date:"F j, Y" }}</p>
+                        </div>
+                        <div class="rounded-3xl bg-[#111111] p-4">
+                            <p class="text-sm text-neutral-500">End date</p>
+                            <p class="mt-2 text-lg font-semibold text-white">{{ user_subscription.end_date|date:"F j, Y" }}</p>
+                        </div>
+                        <div class="rounded-3xl bg-[#111111] p-4">
+                            <p class="text-sm text-neutral-500">Payment provider</p>
+                            <p class="mt-2 text-lg font-semibold text-white">Stripe</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="rounded-3xl border border-red-700 bg-[#1b1b1b] p-6 shadow-[0_24px_80px_rgba(255,0,0,0.18)]">
+                <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                    <div>
+                        <p class="text-sm uppercase tracking-[0.25em] text-red-500">Danger zone</p>
+                        <h2 class="mt-2 text-2xl font-semibold text-white">Delete account</h2>
+                        <p class="mt-2 text-sm leading-6 text-neutral-400">Deleting your account removes your profile, subscription, and saved settings permanently.</p>
+                    </div>
+                    <form method="post" action="{% url 'subscription_delete_account' %}" onsubmit="return confirm('Delete your account and subscription data? This cannot be undone.');">
                         {% csrf_token %}
-                        <button type="submit" class="inline-flex items-center justify-center bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-md transition">
-                            Delete account
-                        </button>
+                        <button type="submit" class="inline-flex items-center rounded-lg bg-red-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-700">Delete account</button>
                     </form>
                 </div>
+            </section>
+            {% else %}
+            <div class="rounded-3xl border border-neutral-800 bg-[#1f1f1f] p-8 shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+                <div class="max-w-2xl">
+                    <h2 class="text-3xl font-semibold text-white">No active subscription</h2>
+                    <p class="mt-3 text-neutral-400">It looks like you don't currently have an active plan. Choose one to get started.</p>
+                    <a href="{% url 'plans' %}" class="mt-6 inline-flex items-center rounded-lg bg-red-600 px-5 py-3 text-white font-semibold hover:bg-red-700">Choose a plan</a>
+                </div>
             </div>
+            <section class="rounded-3xl border border-red-700 bg-[#1b1b1b] p-6 shadow-[0_24px_80px_rgba(255,0,0,0.18)]">
+                <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                    <div>
+                        <p class="text-sm uppercase tracking-[0.25em] text-red-500">Danger zone</p>
+                        <h2 class="mt-2 text-2xl font-semibold text-white">Delete account</h2>
+                        <p class="mt-2 text-sm leading-6 text-neutral-400">Deleting your account removes your profile, subscription, and saved settings permanently.</p>
+                    </div>
+                    <form method="post" action="{% url 'subscription_delete_account' %}" onsubmit="return confirm('Delete your account and subscription data? This cannot be undone.');">
+                        {% csrf_token %}
+                        <button type="submit" class="inline-flex items-center rounded-lg bg-red-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-700">Delete account</button>
+                    </form>
+                </div>
+            </section>
+            {% endif %}
         </div>
     </div>
 </div>
