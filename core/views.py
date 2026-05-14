@@ -4,11 +4,31 @@ from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login as auth_login,logout
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
+from django.db.models import Q
 from .models import Profile,Movie
 from .forms import ProfileForm
 from django.contrib.auth.decorators import login_required
+from functools import wraps
+
+
+def subscription_required(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        try:
+            subscription = request.user.subscription
+            if not subscription.is_valid():
+                messages.error(request, "Your subscription has expired. Please renew your subscription.")
+                return redirect('plans')
+        except Exception:
+            messages.error(request, "Please choose a subscription plan to access the content.")
+            return redirect('plans')
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
 
 class index(View):
     def get(self, request):
@@ -43,6 +63,13 @@ def signup(request):
             messages.error(request, "Password is required")
             return redirect(f'/signup/?email={email}')
 
+        try:
+            validate_password(password)
+        except ValidationError as e:
+            for error in e.messages:
+                messages.error(request, error)
+            return redirect(f'/signup/?email={email}')
+
         user = User.objects.create_user(username=email, email=email, password=password)
         user.save()
         auth_login(request, user)  # Auto-login after signup
@@ -70,7 +97,8 @@ def signin(request):
             return redirect('login')
     return render(request,'core/signin.html')
 
-@login_required  
+@login_required
+@subscription_required
 def profiles_view(request):
     profiles = request.user.profiles.all()
     if not profiles.exists():
@@ -81,6 +109,7 @@ def profiles_view(request):
     })
 
 @login_required
+@subscription_required
 def create_profile(request):
     user_profiles_count = request.user.profiles.count()
     profile_limit = 5
@@ -114,13 +143,15 @@ def select_profile(request, profile_id):
         return redirect('profiles')
     return redirect('home')  # now homepage knows which profile is active
 
-@login_required   
+@login_required
+@subscription_required
 def manage_profiles(request):
     """Display all profiles for management"""
     profiles = Profile.objects.filter(user=request.user)
     return render(request, 'core/manage_profiles.html', {'profiles': profiles})
 
 @login_required
+@subscription_required
 def manage_edit_profile(request, profile_id):
     """Edit a specific profile from manage profiles page"""
     profile = get_object_or_404(Profile, id=profile_id, user=request.user)
@@ -139,6 +170,7 @@ def manage_edit_profile(request, profile_id):
     })
 
 @login_required
+@subscription_required
 def delete_profile(request, profile_id):
     profile = get_object_or_404(Profile, id=profile_id, user=request.user)
 
@@ -150,16 +182,8 @@ def delete_profile(request, profile_id):
 
 
 @login_required
-def home(request):    # Check if user has an active subscription
-    try:
-        subscription = request.user.subscription
-        if not subscription.is_valid():
-            messages.error(request, "Your subscription has expired. Please renew your subscription.")
-            return redirect('plans')
-    except:
-        # User doesn't have any subscription
-        messages.error(request, "Please choose a subscription plan to access the content.")
-        return redirect('plans')
+@subscription_required
+def home(request):
     profile_id = request.session.get('profile_id')
 
     if not profile_id:
@@ -167,7 +191,15 @@ def home(request):    # Check if user has an active subscription
 
     profile = get_object_or_404(Profile, id=profile_id, user=request.user)
 
-    movies = Movie.objects.all()
+    search_query = request.GET.get('q', '').strip()
+    if search_query:
+        movies = Movie.objects.filter(
+            Q(title__icontains=search_query) |
+            Q(description__icontains=search_query)
+        )
+    else:
+        movies = Movie.objects.all()
+
     user_profiles = request.user.profiles.all()
 
     return render(request, 'core/home.html', {
@@ -176,22 +208,13 @@ def home(request):    # Check if user has an active subscription
         'user_profiles': user_profiles,
         'active_category': 'all',
         'categories': Movie.CATEGORY_CHOICES,
+        'search_query': search_query,
     })
 
 
 @login_required
+@subscription_required
 def player(request, movie_id):
-    # Check if user has an active subscription
-    try:
-        subscription = request.user.subscription
-        if not subscription.is_valid():
-            messages.error(request, "Your subscription has expired. Please renew your subscription.")
-            return redirect('plans')
-    except:
-        # User doesn't have any subscription
-        messages.error(request, "Please choose a subscription plan to access the content.")
-        return redirect('plans')
-    
     # Get the profile from session
     profile_id = request.session.get('profile_id')
     profile = None
@@ -229,18 +252,9 @@ def logout_view(request):
 class CustomPasswordChangeView(SuccessMessageMixin,auth_views.PasswordChangeView):
     success_message = "Your password was changed successfully."
 
+@login_required
+@subscription_required
 def movies_by_category(request, category):
-    # Check if user has an active subscription
-    try:
-        subscription = request.user.subscription
-        if not subscription.is_valid():
-            messages.error(request, "Your subscription has expired. Please renew your subscription.")
-            return redirect('plans')
-    except:
-        # User doesn't have any subscription
-        messages.error(request, "Please choose a subscription plan to access the content.")
-        return redirect('plans')
-    
     # Get profile from session
     profile_id = request.session.get('profile_id')
     profile = None
@@ -252,5 +266,6 @@ def movies_by_category(request, category):
         'movies': movies, 
         'user_profiles': request.user.profiles.all(),
         'active_category': category,
-        'profile': profile
+        'profile': profile,
+        
     })

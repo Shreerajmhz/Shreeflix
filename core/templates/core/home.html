@@ -10,12 +10,11 @@
             <img src="{% static 'core/logo.png' %}" alt="logo"  class=" w-32 md:w-48 md:h-18 md:p-4">
             </a>
             <ul class=" hidden md:flex items-center gap-4 text-white/70 ">
-                <li class="hover:text-white cursor-pointer">Home</li>
-                <li class="hover:text-white cursor-pointer">TV Shows</li>
-                <li class="hover:text-white cursor-pointer">Movies</li>
-                <li class="hover:text-white cursor-pointer">News & Popular</li>
-                <li class="hover:text-white cursor-pointer">My List</li>
-                <li class="hover:text-white cursor-pointer">Browse by Languages</li>
+                <li><a href="{% url 'home' %}" class="hover:text-white">Home</a></li>
+                <li><a href="{% url 'movies_by_category' 'vlog' %}" class="hover:text-white">Vlogs</a></li>
+                <li><a href="{% url 'movies_by_category' 'family' %}" class="hover:text-white">Family</a></li>
+                <li><a href="{% url 'movies_by_category' 'cultural' %}" class="hover:text-white">Cultural</a></li>
+                <li><a href="{% url 'movies_by_category' 'random' %}" class="hover:text-white">Random</a></li>
             </ul>
 
             <div class="md:hidden relative">
@@ -26,25 +25,58 @@
 
                 </button>
                 <ul id="mobile-menu"
-                    class="absolute right-2 mt-2 w-48 bg-black border border-gray-700 rounded-md shadow-lg hidden flex-col gap-y-2 p-2">
-                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-800">Home</a></li>
-                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-800">TV Shows</a></li>
-                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-800">Movies</a></li>
-                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-800">News & Popular</a></li>
-                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-800">My List</a></li>
-                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-800">Browse by Languages</a></li>
+                    class="absolute right-2 mt-2 w-56 bg-black border border-gray-700 rounded-md shadow-lg hidden flex-col gap-y-2 p-2">
+                    <li><a href="{% url 'home' %}" class="hover:text-white">Home</a></li>
+                    <li><a href="{% url 'movies_by_category' 'vlog' %}" class="hover:text-white">Vlogs</a></li>
+                    <li><a href="{% url 'movies_by_category' 'family' %}" class="hover:text-white">Family</a></li>
+                    <li><a href="{% url 'movies_by_category' 'cultural' %}" class="hover:text-white">Cultural</a></li>
+                    <li><a href="{% url 'movies_by_category' 'random' %}" class="hover:text-white">Random</a></li>
                 </ul>
 
             </div>
         </div>
-        <div class="flex items-center gap-4">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 md:size-8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-            </svg>
-            <span class="hidden md:inline xl:text-lg md:text-xl">Kids</span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 md:size-8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
-            </svg>
+        <div class="flex items-center gap-4 relative">
+            <div class="relative">
+                <button id="search-toggle" type="button" class="text-white hover:text-gray-300 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 md:size-8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    </svg>
+                </button>
+                <form id="search-form" method="get" action="{% url 'home' %}" class="hidden absolute right-0 top-1/2 -translate-y-1/2 ml-2 items-center gap-2 w-[360px] bg-black border border-gray-700 rounded-md px-3 py-2 shadow-lg z-40">
+                    <div class="flex items-center gap-2 text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        </svg>
+                    </div>
+                    <input
+                        type="text"
+                        name="q"
+                        value="{{ search_query|default:'' }}"
+                        placeholder="Search videos"
+                        class="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600"
+                    >
+                    <button id="search-cancel" type="button" class="text-gray-400 hover:text-white transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+            <div class="relative group">
+                <button id="notification-toggle" type="button" class="text-white hover:text-gray-300 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 md:size-8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+                    </svg>
+                </button>
+                <div id="notification-dropdown" class="absolute right-0 w-64 bg-black border border-gray-700 rounded-md shadow-lg hidden z-50">
+                    <div class="px-4 py-3 border-b border-gray-700">
+                        <p class="text-white font-semibold">Notifications</p>
+                    </div>
+                    <div class="px-4 py-6 text-center">
+                        <p class="text-gray-400 text-sm">No notifications available</p>
+                    </div>
+                </div>
+            </div>
             <div class="relative group">
                 <div class="cursor-pointer">
                         <img src="{% static 'core/avatars/' %}{{ profile.avatar }}" 
@@ -80,6 +112,15 @@
                             </a>
                         </div>
 
+                        <!-- Account Section -->
+                        <div class="border-b border-gray-700">
+                            <a href="{% url 'subscription_account' %}" 
+                            class="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 transition text-white text-sm">
+                                <span class="text-lg">👤</span>
+                                <span>Account</span>
+                            </a>
+                        </div>
+
                         <!-- Change Password Section -->
                         <div class="border-b border-gray-700">
                             <a href="{% url 'password_change' %}" 
@@ -89,7 +130,6 @@
                             </a>
                         </div>
 
-                        
                         <!-- Sign Out Section -->
                         <form method="POST" action="{% url 'logout' %}">
                             {% csrf_token %}
@@ -124,15 +164,60 @@
                 <h2 class="text-white text-2xl md:text-5xl font-bold">Hello {{ profile.name }}!</h2>
             {% endif %}
             <h1 class="md:text-5xl text-xl font-bold">Welcome to Netflix</h1>
-            <p class="hidden md:mt-4 mt-2 text-sm md:text-md text-gray-300">You can click on the for you videos and bless your eyes into premium side</p>
             <div class="mt-6 flex gap-4">
-                <a href="#"
-                   class="bg-white text-sm md:text-md text-black px-2 md:px-6 py-2 rounded font-semibold hover:bg-gray-200">
-                   ▶ Play
+                <a href="{% url 'player' 24 %}"
+                class="bg-white text-sm md:text-md text-black px-2 md:px-6 py-2 rounded font-semibold hover:bg-gray-200">
+                ▶ Play
                 </a>
-                <button class="bg-gray-600/70 px-6 py-2 rounded">
-                   More Info
+               <button type="button" onclick="openHeroModal()" class="bg-gray-600/70 text-white px-6 py-2 rounded">
+                    More Info
                 </button>
+
+                <!-- Modal -->
+                <div id="heroModal" class="fixed inset-0 z-50 bg-black/80 hidden flex items-center justify-center p-4">
+                    <div class="bg-[#181818] rounded-lg overflow-hidden max-w-2xl w-full relative shadow-2xl">
+                        
+                        <!-- Close -->
+                        <button id="heroModalCloseButton" type="button" onclick="closeHeroModal()"
+                                class="absolute top-3 right-3 bg-black/60 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-700">✕</button>
+
+                        <!-- Poster -->
+                        <img src="/media/posters/thunb.png" alt="Movie" class="w-full h-64 object-cover">
+                        <div class="absolute inset-0 h-64 bg-gradient-to-t from-[#181818] via-transparent to-transparent"></div>
+
+                        <!-- Info -->
+                        <div class="px-6 py-4 text-white">
+                            <h2 class="text-2xl font-bold mb-2">SUNAKOTHI JATRA || YASHI KOTHAIGU</h2>
+                            <div class="flex gap-4 text-sm mb-3">
+                                <span class="text-green-400 font-semibold">2024</span>
+                                <span class="border border-gray-500 px-1 text-gray-300 text-xs">HD</span>
+                            </div>
+                            <p class="text-gray-300 text-sm leading-relaxed">the ending of sunakothi jatra. these are few glimpse of sunakothi jatra
+
+                            </p>
+                            <a href="{% url 'player' 24 %}" target="_blank" class="inline-block mt-4 bg-white text-black px-6 py-2 rounded font-semibold hover:bg-gray-200">▶ Play</a>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                function openHeroModal() {
+                    const modal = document.getElementById('heroModal');
+                    modal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                }
+                function closeHeroModal() {
+                    const modal = document.getElementById('heroModal');
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.getElementById('heroModalCloseButton').addEventListener('click', closeHeroModal);
+                    document.getElementById('heroModal').addEventListener('click', function(e) {
+                        if (e.target === this) closeHeroModal();
+                    });
+                });
+                </script>
             </div>
         </div>
     </div>
@@ -143,17 +228,15 @@
     <h1 class="font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl">For you</h1>
 
     <select
-    class="md:text-xl font-bold border rounded bg-gray-800 md:p-3 text-white items-center"
-    onchange="window.location.href=this.value"
+        class="md:text-xl font-bold border rounded bg-gray-800 md:p-3 text-white items-center"
+        onchange="window.location.href=this.value"
     >
-    <option value="{% url 'home' %}">All</option>
-    <option value="{% url 'movies_by_category' 'vlog' %}" {% if active_category == 'vlog' %}selected{% endif %}>Vlog</option>
-    <option value="{% url 'movies_by_category' 'family' %}" {% if active_category == 'family' %}selected{% endif %}>Family</option>
-    <option value="{% url 'movies_by_category' 'cultural' %}" {% if active_category == 'cultural' %}selected{% endif %}>Cultural</option>
-    <option value="{% url 'movies_by_category' 'random' %}" {% if active_category == 'random' %}selected{% endif %}>Random</option>
-
+        <option value="{% url 'home' %}">All</option>
+        <option value="{% url 'movies_by_category' 'vlog' %}" {% if active_category == 'vlog' %}selected{% endif %}>Vlog</option>
+        <option value="{% url 'movies_by_category' 'family' %}" {% if active_category == 'family' %}selected{% endif %}>Family</option>
+        <option value="{% url 'movies_by_category' 'cultural' %}" {% if active_category == 'cultural' %}selected{% endif %}>Cultural</option>
+        <option value="{% url 'movies_by_category' 'random' %}" {% if active_category == 'random' %}selected{% endif %}>Random</option>
     </select>
-
 </div>
 
 <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 m-6">
@@ -161,22 +244,62 @@
         <div class="bg-gray-900 rounded-md overflow-hidden shadow-lg hover:scale-105 transform transition duration-300">
             {% if movie.poster %}
                 <a href="{% url 'player' movie.id %}" target="_blank">
-                    <img src="{{ movie.poster.url }}" alt="{{ movie.title }}" class="w-full h-48 sm:h-52 md:h-56 lg:h-60 xl:h-64 object-cover">
+                    <img src="{{ movie.poster.url }}" alt="{{ movie.title }}" class="w-full aspect-video object-cover">
                 </a>
             {% endif %}
             <div class="p-2">
                <h3 class="hidden md:block md:text-white font-bold text-sm md:text-lg">{{ movie.title }}</h3>
                 <p class="hidden md:block md:text-gray-300 md:text-sm">{{ movie.release_date }}</p>
 
-                {% if movie.video_url %}
-                    <a href="{% url 'player' movie.id %}" target="_blank">
-                        <button class="bg-red-600 text-white px-4 py-1 mt-2 rounded w-full md:w-auto">Play</button>
-                    </a>
-                {% endif %}
             </div>
         </div>
     {% empty %}
         <p class="text-white">No movies added yet.</p>
     {% endfor %}
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggle = document.getElementById('search-toggle');
+        const form = document.getElementById('search-form');
+
+        if (!toggle || !form) return;
+
+        toggle.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const isHidden = form.classList.toggle('hidden');
+            if (!isHidden) {
+                form.classList.add('flex');
+                form.querySelector('input[name="q"]').focus();
+            } else {
+                form.classList.remove('flex');
+            }
+        });
+
+        const cancelButton = document.getElementById('search-cancel');
+        if (cancelButton) {
+            cancelButton.addEventListener('click', function(event) {
+                form.classList.add('hidden');
+                form.classList.remove('flex');
+                toggle.focus();
+            });
+        }
+
+        const notificationToggle = document.getElementById('notification-toggle');
+        const notificationDropdown = document.getElementById('notification-dropdown');
+
+        if (notificationToggle && notificationDropdown) {
+            notificationToggle.addEventListener('click', function(event) {
+                event.stopPropagation();
+                notificationDropdown.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', function(event) {
+                if (!notificationDropdown.contains(event.target) && !notificationToggle.contains(event.target)) {
+                    notificationDropdown.classList.add('hidden');
+                }
+            });
+        }
+    });
+</script>
 {% endblock content %}

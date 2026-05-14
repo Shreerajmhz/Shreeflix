@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout as auth_logout
 from django.contrib import messages
 from django.utils import timezone
 from datetime import timedelta
@@ -30,7 +31,43 @@ def plans(request):
 
 
 # -------------------------------
-# 2️⃣ Stripe Checkout Redirect
+# 2️⃣ Account Detail Page
+# -------------------------------
+@login_required
+def account(request):
+    """
+    Displays the current user's subscription details and a link to change plan.
+    """
+    user_subscription = None
+    try:
+        user_subscription = request.user.subscription
+    except UserSubscription.DoesNotExist:
+        user_subscription = None
+
+    return render(request, 'subscription/account.html', {
+        'user_subscription': user_subscription,
+    })
+
+
+@login_required
+def delete_account(request):
+    """
+    Deletes the current authenticated user account.
+    """
+    if request.method != 'POST':
+        messages.error(request, 'Invalid request method for account deletion.')
+        return redirect('subscription_account')
+
+    user = request.user
+    auth_logout(request)
+    user.delete()
+
+    messages.success(request, 'Your account has been deleted successfully.')
+    return redirect('index')
+
+
+# -------------------------------
+# 3️⃣ Stripe Checkout Redirect
 # -------------------------------
 @login_required
 def payment_redirect(request, plan_id):

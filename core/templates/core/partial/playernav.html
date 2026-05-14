@@ -38,6 +38,14 @@
                                 <span>Manage Profiles</span>
                             </a>
                         </div>
+                        <!-- Account Section -->
+                        <div class="border-b border-gray-700">
+                            <a href="{% url 'subscription_account' %}" 
+                            class="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 transition text-white text-sm">
+                                <span class="text-lg">👤</span>
+                                <span>Account</span>
+                            </a>
+                        </div>
 
                          <!-- Change Password Section -->
                         <div class="border-b border-gray-700">
@@ -47,7 +55,6 @@
                                 <span>Change Password</span>
                             </a>
                         </div>
-
                         
                         <!-- Sign Out Section -->
                         <form method="POST" action="{% url 'logout' %}">
