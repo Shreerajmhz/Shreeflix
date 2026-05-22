@@ -36,44 +36,111 @@
             </div>
         </div>
         <div class="flex items-center gap-4 relative">
-            <div class="relative">
-                <button id="search-toggle" type="button" class="text-white hover:text-gray-300 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 md:size-8">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+
+            <!-- SEARCH -->
+            <div class="flex items-center relative">
+
+                <!-- Search Icon -->
+                <button id="search-toggle" type="button"
+                    class="flex items-center justify-center text-white hover:text-gray-300 transition">
+                    
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-5 h-5 md:w-8 md:h-8">
+                        
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
                     </svg>
                 </button>
-                <form id="search-form" method="get" action="{% url 'home' %}" class="hidden absolute right-0 top-1/2 -translate-y-1/2 ml-2 items-center gap-2 w-[360px] bg-black border border-gray-700 rounded-md px-3 py-2 shadow-lg z-40">
-                    <div class="flex items-center gap-2 text-gray-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                        </svg>
-                    </div>
-                    <input
-                        type="text"
+
+                <!-- Search Form -->
+                <form id="search-form"
+                    method="get"
+                    action="{% url 'home' %}"
+                    class="hidden items-center gap-2 border border-white bg-black/90 px-3 py-1.5
+                            w-[180px] md:w-[280px] absolute right-0 top-1/2 -translate-y-1/2
+                            transition-all duration-200 z-50">
+
+                    <!-- Search Icon Inside -->
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        class="w-4 h-4 text-white shrink-0">
+
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+                    </svg>
+
+                    <!-- Input -->
+                    <input type="text"
                         name="q"
+                        id="search-input"
                         value="{{ search_query|default:'' }}"
-                        placeholder="Search videos"
-                        class="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600"
-                    >
-                    <button id="search-cancel" type="button" class="text-gray-400 hover:text-white transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        placeholder="Titles, people, genres"
+                        class="flex-1 bg-transparent text-white text-sm placeholder-gray-400
+                                focus:outline-none min-w-0">
+
+                    <!-- Close -->
+                    <button id="search-cancel"
+                        type="button"
+                        class="flex items-center justify-center text-gray-400 hover:text-white shrink-0">
+
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="2.5"
+                            stroke="currentColor"
+                            class="w-4 h-4">
+
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M6 18L18 6M6 6l12 12"/>
                         </svg>
                     </button>
                 </form>
             </div>
-            <div class="relative group">
-                <button id="notification-toggle" type="button" class="text-white hover:text-gray-300 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 md:size-8">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+
+
+            <!-- NOTIFICATION -->
+            <div class="relative group flex items-center">
+
+                <button id="notification-toggle"
+                    type="button"
+                    class="flex items-center justify-center text-white hover:text-gray-300 transition">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-5 h-5 md:w-8 md:h-8">
+
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/>
                     </svg>
                 </button>
-                <div id="notification-dropdown" class="absolute right-0 w-64 bg-black border border-gray-700 rounded-md shadow-lg hidden z-50">
+
+                <!-- Dropdown -->
+                <div id="notification-dropdown"
+                    class="absolute right-0 top-12 w-64 bg-black border border-gray-700
+                            rounded-md shadow-lg hidden z-50">
+
                     <div class="px-4 py-3 border-b border-gray-700">
                         <p class="text-white font-semibold">Notifications</p>
                     </div>
+
                     <div class="px-4 py-6 text-center">
-                        <p class="text-gray-400 text-sm">No notifications available</p>
+                        <p class="text-gray-400 text-sm">
+                            No notifications available
+                        </p>
                     </div>
                 </div>
             </div>
@@ -163,7 +230,7 @@
             {% if profile %}
                 <h2 class="text-white text-2xl md:text-5xl font-bold">Hello {{ profile.name }}!</h2>
             {% endif %}
-            <h1 class="md:text-5xl text-xl font-bold">Welcome to Netflix</h1>
+            <h1 class="md:text-5xl text-xl font-bold">Welcome to ShreeFlix</h1>
             <div class="mt-6 flex gap-4">
                 <a href="{% url 'player' 24 %}"
                 class="bg-white text-sm md:text-md text-black px-2 md:px-6 py-2 rounded font-semibold hover:bg-gray-200">
@@ -251,49 +318,69 @@
         <p class="text-white">No movies added yet.</p>
     {% endfor %}
 </div>
-
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const toggle = document.getElementById('search-toggle');
-        const form = document.getElementById('search-form');
+document.addEventListener('DOMContentLoaded', function () {
+    const searchToggle = document.getElementById('search-toggle');
+    const searchForm   = document.getElementById('search-form');
+    const searchCancel = document.getElementById('search-cancel');
+    const searchInput  = document.getElementById('search-input');
 
-        if (!toggle || !form) return;
+    function openSearch() {
+        searchToggle.classList.add('hidden');       // hide magnify icon
+        searchForm.classList.remove('hidden');
+        searchForm.classList.add('flex');
+        searchInput.focus();
+    }
+    function closeSearch() {
+        searchForm.classList.add('hidden');
+        searchForm.classList.remove('flex');
+        searchToggle.classList.remove('hidden');    // show magnify icon again
+    }
 
-        toggle.addEventListener('click', function(event) {
-            event.stopPropagation();
-            const isHidden = form.classList.toggle('hidden');
-            if (!isHidden) {
-                form.classList.add('flex');
-                form.querySelector('input[name="q"]').focus();
-            } else {
-                form.classList.remove('flex');
-            }
+    searchToggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        openSearch();
+    });
+    searchCancel.addEventListener('click', function (e) {
+        e.stopPropagation();
+        closeSearch();
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeSearch();
+    });
+
+    // Notifications
+    const notifToggle   = document.getElementById('notification-toggle');
+    const notifDropdown = document.getElementById('notification-dropdown');
+    if (notifToggle && notifDropdown) {
+        notifToggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            notifDropdown.classList.toggle('hidden');
         });
+    }
 
-        const cancelButton = document.getElementById('search-cancel');
-        if (cancelButton) {
-            cancelButton.addEventListener('click', function(event) {
-                form.classList.add('hidden');
-                form.classList.remove('flex');
-                toggle.focus();
-            });
+    // Mobile browse menu
+    const mobileBtn  = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+
+    // Outside click closes everything
+    document.addEventListener('click', function (e) {
+        if (!searchForm.contains(e.target) && !searchToggle.contains(e.target)) {
+            closeSearch();
         }
-
-        const notificationToggle = document.getElementById('notification-toggle');
-        const notificationDropdown = document.getElementById('notification-dropdown');
-
-        if (notificationToggle && notificationDropdown) {
-            notificationToggle.addEventListener('click', function(event) {
-                event.stopPropagation();
-                notificationDropdown.classList.toggle('hidden');
-            });
-
-            document.addEventListener('click', function(event) {
-                if (!notificationDropdown.contains(event.target) && !notificationToggle.contains(event.target)) {
-                    notificationDropdown.classList.add('hidden');
-                }
-            });
+        if (notifDropdown && !notifDropdown.contains(e.target) && !notifToggle.contains(e.target)) {
+            notifDropdown.classList.add('hidden');
+        }
+        if (mobileMenu && !mobileMenu.contains(e.target) && !mobileBtn.contains(e.target)) {
+            mobileMenu.classList.add('hidden');
         }
     });
+});
 </script>
 {% endblock content %}

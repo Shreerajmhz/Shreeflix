@@ -240,10 +240,6 @@ def player(request, movie_id):
         'categories': Movie.CATEGORY_CHOICES,
     })
 
-
-def login_view(request):
-    return render(request,"accounts/login.html")
-
 @login_required
 def logout_view(request):
     logout(request)

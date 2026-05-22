@@ -15,4 +15,7 @@ urlpatterns = [
     # Stripe success & cancel
     path("payment/success/", views.payment_success, name="payment_success"),
     path("payment/cancel/", views.payment_cancel, name="payment_cancel"),
+    
+    # Stripe Webhook
+    path("webhook/", views.stripe_webhook, name="stripe_webhook"),
 ]

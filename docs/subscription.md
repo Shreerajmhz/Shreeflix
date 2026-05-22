@@ -234,8 +234,37 @@ urlpatterns = [
     path("pay/<int:plan_id>/", views.payment_redirect, name="pay"),
     path("payment/success/", views.payment_success, name="payment_success"),
     path("payment/cancel/", views.payment_cancel, name="payment_cancel"),
+    path("webhook/", views.stripe_webhook, name="stripe_webhook"),
 ]
 ```
+
+### Stripe Webhook Handler (`/subscription/webhook/`)
+
+**Handler:** `stripe_webhook(request)`
+
+Listens for POST requests from Stripe to update the user's subscription asynchronously. This ensures that even if a user closes their browser window during the checkout process, the backend still receives payment confirmation and activates their subscription.
+
+**Security:**
+- Decorated with `@csrf_exempt` because Stripe requests do not include a CSRF token.
+- Verifies the `HTTP_STRIPE_SIGNATURE` header using the `STRIPE_WEBHOOK_SECRET` key to ensure request authenticity.
+- If `settings.DEBUG = True` and no `STRIPE_WEBHOOK_SECRET` is defined, falls back to parsing the payload directly without verification to ease local development.
+
+**Handling Events:**
+- **`checkout.session.completed`**: Triggered when a customer successfully finishes the Checkout flow. Gets the `user_id` and `plan_id` from the session metadata or `client_reference_id`, retrieves the records, and activates or updates the corresponding `UserSubscription`.
+
+**Local Testing with Stripe CLI:**
+1. Log in to Stripe:
+   ```bash
+   stripe login
+   ```
+2. Listen to webhooks locally and forward them:
+   ```bash
+   stripe listen --forward-to localhost:8000/subscription/webhook/
+   ```
+3. Copy the signature secret (starts with `whsec_...`) printed on your terminal and add it to your `.env`:
+   ```env
+   STRIPE_WEBHOOK_SECRET=whsec_your_secret_here
+   ```
 
 **Included in main project:**
 `netflix/urls.py`: `path('subscription/', include('subscription.urls'))`
@@ -522,11 +551,10 @@ Potential features to add:
 1. **Recurring Billing** - Use Stripe subscriptions mode instead of payment
 2. **User Subscription Tracking** - Store user's active subscription in database
 3. **Subscription Model** - Create UserSubscription model linking users to plans
-4. **Webhook Handling** - Process Stripe webhooks for payment confirmations
-5. **Subscription Management** - Allow users to upgrade/downgrade/cancel
-6. **Email Notifications** - Send confirmation emails after payment
-7. **Invoice Generation** - Create PDF invoices for payments
-8. **Analytics** - Track subscription sales and metrics
+4. **Subscription Management** - Allow users to upgrade/downgrade/cancel
+5. **Email Notifications** - Send confirmation emails after payment
+6. **Invoice Generation** - Create PDF invoices for payments
+7. **Analytics** - Track subscription sales and metrics
 
 ---
 

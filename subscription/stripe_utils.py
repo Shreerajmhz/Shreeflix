@@ -38,5 +38,10 @@ def create_checkout_session(plan, request=None):
         success_url=success_url,
         cancel_url=cancel_url,
         customer_email=customer_email,
+        client_reference_id=str(request.user.id) if request and request.user.is_authenticated else None,
+        metadata={
+            "user_id": str(request.user.id) if request and request.user.is_authenticated else "",
+            "plan_id": str(plan.id)
+        }
     )
     return session
