@@ -4,10 +4,11 @@
 
 {% block content %}
 <div class="relative md:h-[80vh] h-[30vh] pt-24 md:pt-24 bg-black overflow-hidden">
-    <nav id="nav" class="fixed top-0 left-0 w-full z-30 h-18 md:h-24 flex items-center justify-between px-4 backdrop-blur-sm">
+    <nav id="nav"
+        class="fixed top-0 left-0 w-full z-30 h-18 md:h-24 flex items-center justify-between px-4 backdrop-blur-sm">
         <div class="relative flex items-center md:gap-6 gap-2 text-white">
             <a href="{% url 'home' %}">
-            <img src="{% static 'core/logo.png' %}" alt="logo"  class=" w-32 md:w-48 md:h-18 md:p-4">
+                <img src="{% static 'core/logo.png' %}" alt="logo" class=" w-32 md:w-48 md:h-18 md:p-4">
             </a>
             <ul class=" hidden md:flex items-center gap-4 text-white/70 ">
                 <li><a href="{% url 'home' %}" class="hover:text-white">Home</a></li>
@@ -19,13 +20,14 @@
 
             <div class="md:hidden relative">
                 <button id="mobile-menu-button" class="flex items-center text-sm ml-4">Browse
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M7 10l5 5 5-5H7z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path d="M7 10l5 5 5-5H7z" />
                     </svg>
 
                 </button>
                 <ul id="mobile-menu"
-                    class="absolute right-2 mt-2 w-56 bg-black border border-gray-700 rounded-md shadow-lg hidden flex-col gap-y-2 p-2">
+                    class="absolute right-0 mt-2 w-56 bg-black border border-gray-700 rounded-md shadow-lg hidden flex flex-col gap-y-2 p-2">
                     <li><a href="{% url 'home' %}" class="hover:text-white">Home</a></li>
                     <li><a href="{% url 'movies_by_category' 'vlog' %}" class="hover:text-white">Vlogs</a></li>
                     <li><a href="{% url 'movies_by_category' 'family' %}" class="hover:text-white">Family</a></li>
@@ -43,65 +45,41 @@
                 <!-- Search Icon -->
                 <button id="search-toggle" type="button"
                     class="flex items-center justify-center text-white hover:text-gray-300 transition">
-                    
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-5 h-5 md:w-8 md:h-8">
-                        
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-5 h-5 md:w-8 md:h-8">
+
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                     </svg>
                 </button>
 
                 <!-- Search Form -->
-                <form id="search-form"
-                    method="get"
-                    action="{% url 'home' %}"
-                    class="hidden items-center gap-2 border border-white bg-black/90 px-3 py-1.5
+                <form id="search-form" method="get" action="{% url 'home' %}" class="hidden items-center gap-2 border border-white bg-black/90 px-3 py-1.5
                             w-[180px] md:w-[280px] absolute right-0 top-1/2 -translate-y-1/2
                             transition-all duration-200 z-50">
 
                     <!-- Search Icon Inside -->
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="2"
-                        stroke="currentColor"
-                        class="w-4 h-4 text-white shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-4 h-4 text-white shrink-0">
 
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                     </svg>
 
                     <!-- Input -->
-                    <input type="text"
-                        name="q"
-                        id="search-input"
-                        value="{{ search_query|default:'' }}"
-                        placeholder="Titles, people, genres"
-                        class="flex-1 bg-transparent text-white text-sm placeholder-gray-400
+                    <input type="text" name="q" id="search-input" value="{{ search_query|default:'' }}"
+                        placeholder="Titles, people, genres" class="flex-1 bg-transparent text-white text-sm placeholder-gray-400
                                 focus:outline-none min-w-0">
 
                     <!-- Close -->
-                    <button id="search-cancel"
-                        type="button"
+                    <button id="search-cancel" type="button"
                         class="flex items-center justify-center text-gray-400 hover:text-white shrink-0">
 
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="2.5"
-                            stroke="currentColor"
-                            class="w-4 h-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                            stroke="currentColor" class="w-4 h-4">
 
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M6 18L18 6M6 6l12 12"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </form>
@@ -111,26 +89,19 @@
             <!-- NOTIFICATION -->
             <div class="relative group flex items-center">
 
-                <button id="notification-toggle"
-                    type="button"
+                <button id="notification-toggle" type="button"
                     class="flex items-center justify-center text-white hover:text-gray-300 transition">
 
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-5 h-5 md:w-8 md:h-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-5 h-5 md:w-8 md:h-8">
 
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/>
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
                     </svg>
                 </button>
 
                 <!-- Dropdown -->
-                <div id="notification-dropdown"
-                    class="absolute right-0 top-12 w-64 bg-black border border-gray-700
+                <div id="notification-dropdown" class="absolute right-0 top-12 w-64 bg-black border border-gray-700
                             rounded-md shadow-lg hidden z-50">
 
                     <div class="px-4 py-3 border-b border-gray-700">
@@ -146,112 +117,105 @@
             </div>
             <div class="relative group">
                 <div class="cursor-pointer">
-                        <img src="{% static 'core/avatars/' %}{{ profile.avatar }}" 
-                             alt="{{ profile.name }}" 
-                             class="size-8 md:size-10 rounded-full border-2 border-white hover:border-red-600 object-cover transition">
+                    <img src="{% static 'core/avatars/' %}{{ profile.avatar }}" alt="{{ profile.name }}"
+                        class="size-8 md:size-10 rounded-full border-2 border-white hover:border-red-600 object-cover transition">
                 </div>
-                  <div class="absolute right-0 w-48 bg-black border border-gray-700 rounded-md shadow-lg hidden group-hover:block z-50">
-                        <!-- Profile Switch Section -->
-                        {% if user_profiles %}
-                        <div class="border-b border-gray-700">
-                            <p class="px-4 py-2 text-gray-400 text-xs font-semibold uppercase">Switch Profile</p>
-                            {% for prof in user_profiles %}
-                            <a href="{% url 'select_profile' prof.id %}" 
-                               class="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 transition {% if profile.id == prof.id %}bg-gray-900{% endif %}">
-                                <img src="{% static 'core/avatars/' %}{{ prof.avatar }}" 
-                                     alt="{{ prof.name }}" 
-                                     class="w-8 h-8 rounded-full border border-gray-600 object-cover">
-                                <span class="text-sm text-white">{{ prof.name }}</span>
-                                {% if profile.id == prof.id %}
-                                <span class="ml-auto text-red-600 font-bold">✓</span>
-                                {% endif %}
-                            </a>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                        
-                        <!-- Manage Profiles Section -->
-                        <div class="border-b border-gray-700">
-                            <a href="{% url 'manage_profiles' %}" 
-                            class="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 transition text-white text-sm">
-                                <span class="text-lg">⚙️</span>
-                                <span>Manage Profiles</span>
-                            </a>
-                        </div>
-
-                        <!-- Account Section -->
-                        <div class="border-b border-gray-700">
-                            <a href="{% url 'subscription_account' %}" 
-                            class="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 transition text-white text-sm">
-                                <span class="text-lg">👤</span>
-                                <span>Account</span>
-                            </a>
-                        </div>
-
-                        <!-- Change Password Section -->
-                        <div class="border-b border-gray-700">
-                            <a href="{% url 'password_change' %}" 
-                            class="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 transition text-white text-sm">
-                                <span class="text-lg">🔒</span>
-                                <span>Change Password</span>
-                            </a>
-                        </div>
-
-                        <!-- Sign Out Section -->
-                        <form method="POST" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <button 
-                                type="submit"
-                                class="w-full text-left px-8 py-4 rounded-md text-sm hover:bg-red-600 transition text-white"
-                            >
-                                Sign out
-                            </button>
-                        </form>
+                <div
+                    class="absolute right-0 w-48 bg-black border border-gray-700 rounded-md shadow-lg hidden group-hover:block z-50">
+                    <!-- Profile Switch Section -->
+                    {% if user_profiles %}
+                    <div class="border-b border-gray-700">
+                        <p class="px-4 py-2 text-gray-400 text-xs font-semibold uppercase">Switch Profile</p>
+                        {% for prof in user_profiles %}
+                        <a href="{% url 'select_profile' prof.id %}"
+                            class="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 transition {% if profile.id == prof.id %}bg-gray-900{% endif %}">
+                            <img src="{% static 'core/avatars/' %}{{ prof.avatar }}" alt="{{ prof.name }}"
+                                class="w-8 h-8 rounded-full border border-gray-600 object-cover">
+                            <span class="text-sm text-white">{{ prof.name }}</span>
+                            {% if profile.id == prof.id %}
+                            <span class="ml-auto text-red-600 font-bold">✓</span>
+                            {% endif %}
+                        </a>
+                        {% endfor %}
                     </div>
+                    {% endif %}
+
+                    <!-- Manage Profiles Section -->
+                    <div class="border-b border-gray-700">
+                        <a href="{% url 'manage_profiles' %}"
+                            class="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 transition text-white text-sm">
+                            <span class="text-lg">⚙️</span>
+                            <span>Manage Profiles</span>
+                        </a>
+                    </div>
+
+                    <!-- Account Section -->
+                    <div class="border-b border-gray-700">
+                        <a href="{% url 'subscription_account' %}"
+                            class="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 transition text-white text-sm">
+                            <span class="text-lg">👤</span>
+                            <span>Account</span>
+                        </a>
+                    </div>
+
+                    <!-- Change Password Section -->
+                    <div class="border-b border-gray-700">
+                        <a href="{% url 'password_change' %}"
+                            class="flex items-center gap-3 px-4 py-3 hover:bg-gray-900 transition text-white text-sm">
+                            <span class="text-lg">🔒</span>
+                            <span>Change Password</span>
+                        </a>
+                    </div>
+
+                    <!-- Sign Out Section -->
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="w-full text-left px-8 py-4 rounded-md text-sm hover:bg-red-600 transition text-white">
+                            Sign out
+                        </button>
+                    </form>
+                </div>
             </div>
 
-        </div>  
+        </div>
     </nav>
 
     <!-- Background Video -->
-    <video
-        class="absolute top-0 left-0 w-full md:h-[80vh] h-[30vh] z-10 object-cover"
-        autoplay
-        muted
-        loop
-        playsinline
-    >
+    <video class="absolute top-0 left-0 w-full md:h-[80vh] h-[30vh] z-10 object-cover" autoplay muted loop playsinline>
         <source src="/media/posters/bg/trailer2.mp4" type="video/mp4">
     </video>
 
-        <!-- Content on top -->
+    <!-- Content on top -->
     <div class="relative z-20 flex md:items-end h-full px-2 md:px-10 md:pb-16">
         <div class="md:max-w-xl max-w-54">
             {% if profile %}
-                <h2 class="text-white text-2xl md:text-5xl font-bold">Hello {{ profile.name }}!</h2>
+            <h2 class="text-white text-2xl md:text-5xl font-bold">Hello {{ profile.name }}!</h2>
             {% endif %}
             <h1 class="md:text-5xl text-xl font-bold">Welcome to ShreeFlix</h1>
             <div class="mt-6 flex gap-4">
                 <a href="{% url 'player' 24 %}"
-                class="bg-white text-sm md:text-md text-black px-2 md:px-6 py-2 rounded font-semibold hover:bg-gray-200">
-                ▶ Play
+                    class="bg-white text-sm md:text-md text-black px-2 md:px-6 py-2 rounded font-semibold hover:bg-gray-200">
+                    ▶ Play
                 </a>
-               <button type="button" onclick="openHeroModal()" class="bg-gray-600/70 text-white px-6 py-2 rounded">
+                <button type="button" onclick="openHeroModal()" class="bg-gray-600/70 text-white px-6 py-2 rounded">
                     More Info
                 </button>
 
                 <!-- Modal -->
-                <div id="heroModal" class="fixed inset-0 z-50 bg-black/80 items-center justify-center p-4" style="display:none;">
+                <div id="heroModal" class="fixed inset-0 z-50 bg-black/80 items-center justify-center p-4"
+                    style="display:none;">
                     <div class="bg-[#181818] rounded-lg overflow-hidden max-w-2xl w-full relative shadow-2xl">
-                        
+
                         <!-- Close -->
-                        <button type="button" 
-                                onclick="closeHeroModal()"
-                                class="absolute top-3 right-3 bg-black/60 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-700 z-10">✕</button>
+                        <button type="button" onclick="closeHeroModal()"
+                            class="absolute top-3 right-3 bg-black/60 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-700 z-10">✕</button>
 
                         <!-- Poster -->
                         <img src="/media/posters/thunb.png" alt="Movie" class="w-full h-64 object-cover">
-                        <div class="absolute inset-0 h-64 bg-gradient-to-t from-[#181818] via-transparent to-transparent"></div>
+                        <div
+                            class="absolute inset-0 h-64 bg-gradient-to-t from-[#181818] via-transparent to-transparent">
+                        </div>
 
                         <!-- Info -->
                         <div class="px-6 py-4 text-white">
@@ -260,24 +224,27 @@
                                 <span class="text-green-400 font-semibold">2024</span>
                                 <span class="border border-gray-500 px-1 text-gray-300 text-xs">HD</span>
                             </div>
-                            <p class="text-gray-300 text-sm leading-relaxed">The ending of sunakothi jatra. These are few glimpse of sunakothi jatra.</p>
-                            <a href="{% url 'player' 24 %}" target="_blank" class="inline-block mt-4 bg-white text-black px-6 py-2 rounded font-semibold hover:bg-gray-200">▶ Play</a>
+                            <p class="text-gray-300 text-sm leading-relaxed">The ending of sunakothi jatra. These are
+                                few glimpse of sunakothi jatra.</p>
+                            <a href="{% url 'player' 24 %}" target="_blank"
+                                class="inline-block mt-4 bg-white text-black px-6 py-2 rounded font-semibold hover:bg-gray-200">▶
+                                Play</a>
                         </div>
                     </div>
                 </div>
 
                 <script>
-                function openHeroModal() {
-                    document.getElementById('heroModal').style.display = 'flex';
-                    document.body.style.overflow = 'hidden';
-                }
-                function closeHeroModal() {
-                    document.getElementById('heroModal').style.display = 'none';
-                    document.body.style.overflow = '';
-                }
-                document.getElementById('heroModal').addEventListener('click', function(e) {
-                    if (e.target === this) closeHeroModal();
-                });
+                    function openHeroModal() {
+                        document.getElementById('heroModal').style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
+                    }
+                    function closeHeroModal() {
+                        document.getElementById('heroModal').style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                    document.getElementById('heroModal').addEventListener('click', function (e) {
+                        if (e.target === this) closeHeroModal();
+                    });
                 </script>
             </div>
         </div>
@@ -288,99 +255,97 @@
 <div class="flex items-center justify-between m-6 gap-6">
     <h1 class="font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl">For you</h1>
 
-    <select
-        class="md:text-xl font-bold border rounded bg-gray-800 md:p-3 text-white items-center"
-        onchange="window.location.href=this.value"
-    >
-        <option value="{% url 'home' %}">All</option>
-        <option value="{% url 'movies_by_category' 'vlog' %}" {% if active_category == 'vlog' %}selected{% endif %}>Vlog</option>
-        <option value="{% url 'movies_by_category' 'family' %}" {% if active_category == 'family' %}selected{% endif %}>Family</option>
-        <option value="{% url 'movies_by_category' 'cultural' %}" {% if active_category == 'cultural' %}selected{% endif %}>Cultural</option>
-        <option value="{% url 'movies_by_category' 'random' %}" {% if active_category == 'random' %}selected{% endif %}>Random</option>
-    </select>
+    <select class="md:text-xl font-bold border rounded bg-gray-800 md:p-3 text-white items-center"
+    onchange="window.location.href=this.value">
+    <option value="{% url 'home' %}">All</option>
+    <option value="{% url 'movies_by_category' 'vlog' %}" {% if active_category == 'vlog' %}selected{% endif %}>Vlog</option>
+    <option value="{% url 'movies_by_category' 'family' %}" {% if active_category == 'family' %}selected{% endif %}>Family</option>
+    <option value="{% url 'movies_by_category' 'cultural' %}" {% if active_category == 'cultural' %}selected{% endif %}>Cultural</option>
+    <option value="{% url 'movies_by_category' 'random' %}" {% if active_category == 'random' %}selected{% endif %}>Random</option>
+</select>
 </div>
 
 <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 m-6">
     {% for movie in movies %}
-        <div class="bg-gray-900 rounded-md overflow-hidden shadow-lg hover:scale-105 transform transition duration-300">
-            {% if movie.poster %}
-                <a href="{% url 'player' movie.id %}" target="_blank">
-                    <img src="{{ movie.poster.url }}" alt="{{ movie.title }}" class="w-full aspect-video object-cover">
-                </a>
-            {% endif %}
-            <div class="p-2">
-               <h3 class="hidden md:block md:text-white font-bold text-sm md:text-lg">{{ movie.title }}</h3>
-                <p class="hidden md:block md:text-gray-300 md:text-sm">{{ movie.release_date }}</p>
+    <div class="bg-gray-900 rounded-md overflow-hidden shadow-lg hover:scale-105 transform transition duration-300">
+        {% if movie.poster %}
+        <a href="{% url 'player' movie.id %}" target="_blank">
+            <img src="{{ movie.poster.url }}" alt="{{ movie.title }}" class="w-full aspect-video object-cover">
+        </a>
+        {% endif %}
+        <div class="p-2">
+            <h3 class="hidden md:block md:text-white font-bold text-sm md:text-lg">{{ movie.title }}</h3>
+            <p class="hidden md:block md:text-gray-300 md:text-sm">{{ movie.release_date }}</p>
 
-            </div>
         </div>
+    </div>
     {% empty %}
-        <p class="text-white">No movies added yet.</p>
+    <p class="text-white">No movies added yet.</p>
     {% endfor %}
 </div>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const searchToggle = document.getElementById('search-toggle');
-    const searchForm   = document.getElementById('search-form');
-    const searchCancel = document.getElementById('search-cancel');
-    const searchInput  = document.getElementById('search-input');
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchToggle = document.getElementById('search-toggle');
+        const searchForm = document.getElementById('search-form');
+        const searchCancel = document.getElementById('search-cancel');
+        const searchInput = document.getElementById('search-input');
 
-    function openSearch() {
-        searchToggle.classList.add('hidden');       // hide magnify icon
-        searchForm.classList.remove('hidden');
-        searchForm.classList.add('flex');
-        searchInput.focus();
-    }
-    function closeSearch() {
-        searchForm.classList.add('hidden');
-        searchForm.classList.remove('flex');
-        searchToggle.classList.remove('hidden');    // show magnify icon again
-    }
+        function openSearch() {
+            searchToggle.classList.add('hidden');       // hide magnify icon
+            searchForm.classList.remove('hidden');
+            searchForm.classList.add('flex');
+            searchInput.focus();
+        }
+        function closeSearch() {
+            searchForm.classList.add('hidden');
+            searchForm.classList.remove('flex');
+            searchToggle.classList.remove('hidden');    // show magnify icon again
+        }
 
-    searchToggle.addEventListener('click', function (e) {
-        e.stopPropagation();
-        openSearch();
-    });
-    searchCancel.addEventListener('click', function (e) {
-        e.stopPropagation();
-        closeSearch();
-    });
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') closeSearch();
-    });
-
-    // Notifications
-    const notifToggle   = document.getElementById('notification-toggle');
-    const notifDropdown = document.getElementById('notification-dropdown');
-    if (notifToggle && notifDropdown) {
-        notifToggle.addEventListener('click', function (e) {
+        searchToggle.addEventListener('click', function (e) {
             e.stopPropagation();
-            notifDropdown.classList.toggle('hidden');
+            openSearch();
         });
-    }
-
-    // Mobile browse menu
-    const mobileBtn  = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    if (mobileBtn && mobileMenu) {
-        mobileBtn.addEventListener('click', function (e) {
+        searchCancel.addEventListener('click', function (e) {
             e.stopPropagation();
-            mobileMenu.classList.toggle('hidden');
-        });
-    }
-
-    // Outside click closes everything
-    document.addEventListener('click', function (e) {
-        if (!searchForm.contains(e.target) && !searchToggle.contains(e.target)) {
             closeSearch();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeSearch();
+        });
+
+        // Notifications
+        const notifToggle = document.getElementById('notification-toggle');
+        const notifDropdown = document.getElementById('notification-dropdown');
+        if (notifToggle && notifDropdown) {
+            notifToggle.addEventListener('click', function (e) {
+                e.stopPropagation();
+                notifDropdown.classList.toggle('hidden');
+            });
         }
-        if (notifDropdown && !notifDropdown.contains(e.target) && !notifToggle.contains(e.target)) {
-            notifDropdown.classList.add('hidden');
+
+        // Mobile browse menu
+        const mobileBtn = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileBtn && mobileMenu) {
+            mobileBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                mobileMenu.classList.toggle('hidden');
+            });
         }
-        if (mobileMenu && !mobileMenu.contains(e.target) && !mobileBtn.contains(e.target)) {
-            mobileMenu.classList.add('hidden');
-        }
+
+        // Outside click closes everything
+        document.addEventListener('click', function (e) {
+            if (!searchForm.contains(e.target) && !searchToggle.contains(e.target)) {
+                closeSearch();
+            }
+            if (notifDropdown && !notifDropdown.contains(e.target) && !notifToggle.contains(e.target)) {
+                notifDropdown.classList.add('hidden');
+            }
+            if (mobileMenu && !mobileMenu.contains(e.target) && !mobileBtn.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
     });
-});
 </script>
 {% endblock content %}

@@ -13,7 +13,7 @@ from .models import SubscriptionPlan, UserSubscription
 from .stripe_utils import create_checkout_session
 
 # -------------------------------
-# 1️⃣ Subscription Plans Page
+# Subscription Plans Page
 # -------------------------------
 @login_required
 def plans(request):
@@ -36,7 +36,7 @@ def plans(request):
 
 
 # -------------------------------
-# 2️⃣ Account Detail Page
+# Account Detail Page
 # -------------------------------
 @login_required
 def account(request):
@@ -72,7 +72,7 @@ def delete_account(request):
 
 
 # -------------------------------
-# 3️⃣ Stripe Checkout Redirect
+# Stripe Checkout Redirect
 # -------------------------------
 @login_required
 def payment_redirect(request, plan_id):
@@ -90,7 +90,7 @@ def payment_redirect(request, plan_id):
 
 
 # -------------------------------
-# 3️⃣ Success & Cancel Pages
+# Success & Cancel Pages
 # -------------------------------
 @login_required
 def payment_success(request):

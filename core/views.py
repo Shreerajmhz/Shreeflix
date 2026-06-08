@@ -54,7 +54,12 @@ class index(View):
         
 
 def signup(request):
-    email = request.GET.get('email', '').strip()  # Get email from url
+    email = request.GET.get('email', '').strip()
+
+    # Validate email exists
+    if not email:
+        messages.error(request, "Email is required.")
+        return redirect('index')
 
     if request.method == "POST":
         password = request.POST.get('password', '').strip()
@@ -65,18 +70,29 @@ def signup(request):
 
         try:
             validate_password(password)
+
         except ValidationError as e:
             for error in e.messages:
                 messages.error(request, error)
+
             return redirect(f'/signup/?email={email}')
 
-        user = User.objects.create_user(username=email, email=email, password=password)
-        user.save()
-        auth_login(request, user)  # Auto-login after signup
+        # Prevent duplicate users
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "User already exists.")
+            return redirect('signin')
+
+        user = User.objects.create_user(
+            username=email,
+            email=email,
+            password=password
+        )
+
+        auth_login(request, user)
+
         return redirect('plans')
 
     return render(request, 'core/signup.html', {'email': email})
-
 
 def signin(request):
     if request.method=="POST":
